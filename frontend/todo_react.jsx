@@ -7,3 +7,5 @@ ReactDom.render(
   <TodoList/>,
   document.getElementById("root")
 );
+
+window.TodoStore = require('./stores/todo_store')

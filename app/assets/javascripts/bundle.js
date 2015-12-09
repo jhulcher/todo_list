@@ -49,6 +49,8 @@
 	var ReactDom = __webpack_require__(159);
 	
 	ReactDom.render(React.createElement(TodoList, null), document.getElementById("root"));
+	
+	window.TodoStore = __webpack_require__(160);
 
 /***/ },
 /* 1 */
@@ -19762,8 +19764,8 @@
 	        url: "/api/to_dos/" + id,
 	        method: "PATCH",
 	        data: { to_do: { done: done } },
-	        success: function (response) {
-	          TodoStore[idx] = response;
+	        success: function (updatedTodo) {
+	          _todos[idx] = updatedTodo;
 	          TodoStore.changed();
 	        }
 	      });
@@ -19797,7 +19799,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2),
-	    TodoStore = __webpack_require__(160);
+	    TodoStore = __webpack_require__(160),
+	    DoneButton = __webpack_require__(163);
 	
 	var TodoListItem = React.createClass({
 	  displayName: "TodoListItem",
@@ -19820,6 +19823,7 @@
 	        null,
 	        this.props.todo.body
 	      ),
+	      React.createElement(DoneButton, { todo: this.props.todo }),
 	      React.createElement("input", { type: "submit",
 	        value: "Delete",
 	        onClick: this.handleDestroy
@@ -19888,6 +19892,35 @@
 	});
 	
 	module.exports = TodoForm;
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2),
+	    TodoStore = __webpack_require__(160);
+	
+	var DoneButton = React.createClass({
+	  displayName: "DoneButton",
+	
+	  handleDone: function () {
+	    TodoStore.toggleDone(this.props.todo.id);
+	  },
+	
+	  render: function () {
+	    var value;
+	    if (this.props.todo.done) {
+	      value = "Undo";
+	    } else {
+	      value = "Done";
+	    }
+	    return React.createElement("input", { type: "submit",
+	      value: value,
+	      onClick: this.handleDone });
+	  }
+	});
+	
+	module.exports = DoneButton;
 
 /***/ }
 /******/ ]);

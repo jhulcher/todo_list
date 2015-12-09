@@ -1,5 +1,6 @@
 var React = require("react"),
-    TodoStore = require("./../stores/todo_store.js");
+    TodoStore = require("./../stores/todo_store.js"),
+    DoneButton = require("./done_button");
 
 var TodoListItem = React.createClass({
   handleDestroy: function (e) {
@@ -11,6 +12,7 @@ var TodoListItem = React.createClass({
       <div>
         <div>{this.props.todo.title}</div>
         <div>{this.props.todo.body}</div>
+        <DoneButton todo={this.props.todo}/>
         <input type="submit"
                value="Delete"
                onClick={this.handleDestroy}

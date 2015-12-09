@@ -73,8 +73,8 @@ var TodoStore = {
         url: "/api/to_dos/" + id,
         method: "PATCH",
         data: {to_do: {done: done}},
-        success: function(response) {
-          TodoStore[idx] = response;
+        success: function(updatedTodo) {
+          _todos[idx] = updatedTodo;
           TodoStore.changed();
         }
       })
