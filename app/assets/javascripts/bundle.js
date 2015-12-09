@@ -56,7 +56,8 @@
 
 	var React = __webpack_require__(2),
 	    TodoStore = __webpack_require__(160),
-	    TodoListItem = __webpack_require__(161);
+	    TodoListItem = __webpack_require__(161),
+	    TodoForm = __webpack_require__(162);
 	
 	var TodoList = React.createClass({
 	  displayName: "TodoList",
@@ -87,7 +88,8 @@
 	      null,
 	      this.state.todos.map(function (todo, index) {
 	        return React.createElement(TodoListItem, { key: index, todo: todo });
-	      })
+	      }),
+	      React.createElement(TodoForm, null)
 	    );
 	  }
 	
@@ -19710,6 +19712,8 @@
 	    $.ajax({
 	      url: "api/to_dos",
 	      method: "POST",
+	      dataType: "json",
+	      data: { to_do: todo },
 	      success: function (response) {
 	        _todos.push(response);
 	        TodoStore.changed();
@@ -19734,7 +19738,7 @@
 	        url: "/api/to_dos/" + id,
 	        method: "DELETE",
 	        success: function () {
-	          _todos.splice(that.idx, 1);
+	          _todos.splice(idx, 1);
 	          TodoStore.changed();
 	        }
 	      });
@@ -19798,6 +19802,10 @@
 	var TodoListItem = React.createClass({
 	  displayName: "TodoListItem",
 	
+	  handleDestroy: function (e) {
+	    TodoStore.destroy(this.props.todo.id);
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      "div",
@@ -19812,12 +19820,74 @@
 	        null,
 	        this.props.todo.body
 	      ),
+	      React.createElement("input", { type: "submit",
+	        value: "Delete",
+	        onClick: this.handleDestroy
+	      }),
 	      React.createElement("br", null)
 	    );
 	  }
 	});
 	
 	module.exports = TodoListItem;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2),
+	    TodoStore = __webpack_require__(160);
+	
+	var TodoForm = React.createClass({
+	  displayName: "TodoForm",
+	
+	  getInitialState: function () {
+	    return { title: "", body: "" };
+	  },
+	
+	  updateTitle: function (e) {
+	    this.setState({ title: e.target.value });
+	  },
+	
+	  updateBody: function (e) {
+	    this.setState({ body: e.target.value });
+	  },
+	
+	  handleSubmit: function (e) {
+	    e.preventDefault();
+	
+	    var newTodo = {
+	      title: this.state.title,
+	      body: this.state.body
+	    };
+	
+	    TodoStore.create(newTodo);
+	
+	    this.setState({
+	      title: "",
+	      body: ""
+	    });
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      "form",
+	      { onSubmit: this.handleSubmit },
+	      React.createElement("input", {
+	        type: "text",
+	        onChange: this.updateTitle,
+	        value: this.state.title }),
+	      React.createElement("input", {
+	        type: "text",
+	        onChange: this.updateBody,
+	        value: this.state.body }),
+	      React.createElement("input", { type: "submit", value: "Add Todo" })
+	    );
+	  }
+	
+	});
+	
+	module.exports = TodoForm;
 
 /***/ }
 /******/ ]);

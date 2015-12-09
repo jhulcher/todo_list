@@ -23,6 +23,8 @@ var TodoStore = {
     $.ajax({
       url: "api/to_dos",
       method: "POST",
+      dataType: "json",
+      data: {to_do: todo},
       success: function(response) {
         _todos.push(response);
         TodoStore.changed();
@@ -47,7 +49,7 @@ var TodoStore = {
         url: "/api/to_dos/" + id,
         method: "DELETE",
         success: function() {
-          _todos.splice(that.idx, 1);
+          _todos.splice(idx, 1);
           TodoStore.changed();
         }
       })
