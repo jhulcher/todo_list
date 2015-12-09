@@ -48,8 +48,6 @@
 	var React = __webpack_require__(2);
 	var ReactDom = __webpack_require__(159);
 	
-	window.TodoStore = __webpack_require__(160);
-	
 	ReactDom.render(React.createElement(TodoList, null), document.getElementById("root"));
 
 /***/ },
@@ -57,7 +55,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(2),
-	    TodoStore = __webpack_require__(160);
+	    TodoStore = __webpack_require__(160),
+	    TodoListItem = __webpack_require__(161);
 	
 	var TodoList = React.createClass({
 	  displayName: "TodoList",
@@ -86,17 +85,9 @@
 	    return React.createElement(
 	      "div",
 	      null,
-	      React.createElement(
-	        "ul",
-	        null,
-	        this.state.todos.map(function (todo) {
-	          return React.createElement(
-	            "li",
-	            null,
-	            todo.title
-	          );
-	        })
-	      )
+	      this.state.todos.map(function (todo, index) {
+	        return React.createElement(TodoListItem, { key: index, todo: todo });
+	      })
 	    );
 	  }
 	
@@ -19796,6 +19787,37 @@
 	};
 	
 	module.exports = TodoStore;
+
+/***/ },
+/* 161 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(2),
+	    TodoStore = __webpack_require__(160);
+	
+	var TodoListItem = React.createClass({
+	  displayName: "TodoListItem",
+	
+	  render: function () {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        null,
+	        this.props.todo.title
+	      ),
+	      React.createElement(
+	        "div",
+	        null,
+	        this.props.todo.body
+	      ),
+	      React.createElement("br", null)
+	    );
+	  }
+	});
+	
+	module.exports = TodoListItem;
 
 /***/ }
 /******/ ]);
